@@ -34,6 +34,7 @@ public:
   friend class FloatType;
   friend class BooleanType;
   friend class CharType;
+  friend class DateType;
 
   Value() = default;
 
@@ -108,12 +109,18 @@ public:
   float  get_float() const;
   string get_string() const;
   bool   get_boolean() const;
+  int    get_year() const;
+  int    get_month() const;
+  int    get_day() const;
 
 private:
   void set_int(int val);
   void set_float(float val);
   void set_string(const char *s, int len = 0);
   void set_string_from_other(const Value &other);
+  void set_year(int val);
+  void set_month(int val);
+  void set_day(int val);
 
 private:
   AttrType attr_type_ = AttrType::UNDEFINED;
@@ -126,6 +133,10 @@ private:
     bool    bool_value_;
     char   *pointer_value_;
   } value_ = {.int_value_ = 0};
+
+  int       date_year_ = -1;
+  int       date_month_ = -1;
+  int       date_day_ = -1;
 
   /// 是否申请并占有内存, 目前对于 CHARS 类型 own_data_ 为true, 其余类型 own_data_ 为false
   bool own_data_ = false;

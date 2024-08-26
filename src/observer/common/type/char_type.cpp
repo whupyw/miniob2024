@@ -29,6 +29,26 @@ RC CharType::set_value_from_str(Value &val, const string &data) const
 RC CharType::cast_to(const Value &val, AttrType type, Value &result) const
 {
   switch (type) {
+    case AttrType::DATES: {
+        RC  rc = RC::SUCCESS;
+        std::tm tm = {};        
+        std::istringstream iss(val.get_string());
+        iss.imbue(std::locale("zh_CN.utf-8"));
+        iss >> std::get_time(&tm, "%Y-%m-%d");
+
+        if (iss.fail()) {
+          rc = RC::SCHEMA_FIELD_TYPE_MISMATCH;
+        } else {
+          std::time_t tt = std::mktime(&tm);
+          struct tm *p = localtime(&tt);
+          result.set_type(AttrType::DATES);
+          result.set_year(p->tm_year + 1900);
+          result.set_month(p->tm_mon + 1);
+          result.set_day(p->tm_mday);
+        }
+        return rc;
+      }
+      break;
     default: return RC::UNIMPLEMENTED;
   }
   return RC::SUCCESS;

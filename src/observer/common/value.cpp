@@ -175,6 +175,30 @@ void Value::set_string(const char *s, int len /*= 0*/)
   }
 }
 
+void Value::set_year(int val)
+{
+  reset();
+  attr_type_        = AttrType::DATES;
+  date_year_ = val;
+  length_           = sizeof(val);
+}
+
+void Value::set_month(int val)
+{
+  reset();
+  attr_type_        = AttrType::DATES;
+  date_month_ = val;
+  length_           = sizeof(val);
+}
+
+void Value::set_day(int val)
+{
+  reset();
+  attr_type_        = AttrType::DATES;
+  date_day_ = val;
+  length_           = sizeof(val);
+}
+
 void Value::set_value(const Value &value)
 {
   switch (value.attr_type_) {
